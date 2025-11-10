@@ -1,0 +1,326 @@
+Urinary Tract Infection (UTI) Management Guide
+
+Overview
+========
+Urinary tract infections are among the most common bacterial infections, particularly in women. Proper diagnosis, treatment, and prevention strategies are essential for patient care.
+
+Classification of UTIs
+======================
+
+By Location:
+------------
+1. Lower UTI (Cystitis)
+   - Bladder infection
+   - Symptoms: dysuria, frequency, urgency, suprapubic pain
+   - Generally less severe
+
+2. Upper UTI (Pyelonephritis)
+   - Kidney infection
+   - Symptoms: fever, flank pain, nausea/vomiting, systemic symptoms
+   - More severe, requires aggressive treatment
+
+By Presentation:
+----------------
+1. Uncomplicated UTI
+   - Otherwise healthy, non-pregnant women
+   - Normal urinary tract anatomy
+   - No recent instrumentation
+
+2. Complicated UTI
+   - Males
+   - Pregnant women
+   - Immunocompromised patients
+   - Structural/functional urinary abnormalities
+   - Recent instrumentation or catheterization
+   - Recent antibiotic use
+
+Diagnostic Approach
+===================
+
+Clinical Symptoms:
+------------------
+Classic Triad:
+1. Dysuria (painful urination)
+2. Frequency (frequent urination)
+3. Urgency (sudden urge to urinate)
+
+Additional Symptoms:
+- Suprapubic discomfort
+- Cloudy or foul-smelling urine
+- Hematuria (blood in urine)
+
+Pyelonephritis Symptoms:
+- Fever (>38°C/100.4°F)
+- Flank pain
+- Costovertebral angle tenderness
+- Nausea/vomiting
+
+Laboratory Testing:
+-------------------
+1. Urinalysis (first-line screening)
+   - Nitrite test (specific for gram-negative bacteria)
+   - Leukocyte esterase (WBC indicator)
+   - Microscopy for WBC, bacteria
+   - pH assessment
+
+2. Urine Culture
+   - Gold standard for diagnosis
+   - Identifies causative organism
+   - Determines antibiotic sensitivity
+   - Indicated when:
+     * Complicated UTI
+     * Pyelonephritis
+     * Treatment failure
+     * Recurrent infections
+     * Pregnant women
+
+Interpretation of Urinalysis Results
+=====================================
+
+High Probability UTI (>80%):
+----------------------------
+- Nitrite positive + WBC >10/μL
+- Bacteria + WBC >50/μL
+- Symptoms + positive nitrite
+
+Moderate Probability (40-70%):
+------------------------------
+- WBC 10-50/μL + negative nitrite
+- Positive leukocyte esterase only
+- Symptoms + WBC elevation
+
+Low Probability (<20%):
+-----------------------
+- Negative nitrite + WBC <10/μL
+- All parameters normal
+
+Treatment Strategies
+====================
+
+Uncomplicated Cystitis (First-Line):
+-------------------------------------
+1. Nitrofurantoin 100mg PO BID × 5 days
+   - Effective against E. coli
+   - Low resistance rates
+   - Avoid if GFR <30 mL/min
+
+2. Trimethoprim-Sulfamethoxazole (TMP-SMX) 160/800mg PO BID × 3 days
+   - Effective broad-spectrum
+   - Check local resistance patterns (avoid if >20% resistance)
+
+3. Fosfomycin 3g PO × 1 dose
+   - Single-dose convenience
+   - Effective for E. coli
+
+Alternative Options:
+--------------------
+- Ciprofloxacin 250mg PO BID × 3 days
+- Levofloxacin 250mg PO daily × 3 days
+- Cephalexin 500mg PO BID × 5-7 days
+
+(Reserve fluoroquinolones due to resistance concerns and side effects)
+
+Pyelonephritis Treatment:
+-------------------------
+Outpatient (Mild Cases):
+- Ciprofloxacin 500mg PO BID × 7 days, or
+- Levofloxacin 750mg PO daily × 5-7 days, or
+- TMP-SMX 160/800mg PO BID × 14 days (if susceptible)
+
+Inpatient (Severe Cases):
+- IV antibiotics initially:
+  * Ceftriaxone 1-2g IV daily
+  * Ciprofloxacin 400mg IV q12h
+  * Piperacillin-tazobactam 3.375g IV q6h
+- Transition to oral when stable
+
+Complicated UTI:
+----------------
+- Longer duration (7-14 days)
+- Broader spectrum coverage
+- Address underlying cause
+- Urine culture mandatory
+
+Special Populations
+===================
+
+Pregnant Women:
+---------------
+- All UTIs require treatment (including asymptomatic bacteriuria)
+- Safe antibiotics:
+  * Nitrofurantoin (avoid near term)
+  * Amoxicillin-clavulanate
+  * Cephalexin
+- Avoid:
+  * Fluoroquinolones
+  * TMP-SMX (especially first trimester)
+- Monthly screening recommended
+
+Elderly Patients:
+-----------------
+- Higher risk of complications
+- Consider longer treatment duration
+- Assess for delirium (may be only symptom)
+- Rule out obstruction or retention
+
+Recurrent UTIs:
+---------------
+Definition: ≥2 infections in 6 months or ≥3 in 12 months
+
+Management Strategies:
+1. Identify and treat underlying causes
+2. Prophylactic antibiotics:
+   - Continuous prophylaxis (nightly dose)
+   - Post-coital prophylaxis
+   - Self-start therapy
+
+3. Non-antibiotic prevention:
+   - Vaginal estrogen (postmenopausal women)
+   - Cranberry products
+   - D-mannose supplements
+   - Probiotics
+
+Prevention Strategies
+=====================
+
+Patient Education:
+------------------
+1. Hydration
+   - Drink adequate fluids (6-8 glasses/day)
+   - Don't restrict fluids to avoid frequent urination
+
+2. Urination Habits
+   - Don't delay urination when urge present
+   - Empty bladder completely
+   - Post-coital urination (within 15 minutes)
+
+3. Hygiene
+   - Wipe front to back (women)
+   - Avoid harsh soaps or douches
+   - Shower preferred over baths
+
+4. Lifestyle
+   - Avoid tight-fitting clothing
+   - Cotton underwear
+   - Avoid irritants (bubble baths, feminine sprays)
+
+5. Sexual Activity
+   - Urinate before and after intercourse
+   - Consider post-coital prophylaxis if recurrent UTIs
+
+Catheter-Associated UTI Prevention:
+------------------------------------
+- Use catheters only when necessary
+- Remove as soon as possible
+- Maintain closed drainage system
+- Proper insertion technique
+- Regular assessment of need
+
+Treatment Failure
+=================
+
+Consider if:
+-----------
+- Symptoms persist after 2-3 days of treatment
+- Symptoms recur within 2 weeks
+- Initial improvement followed by worsening
+
+Actions:
+--------
+1. Urine culture with sensitivity testing
+2. Consider resistant organism
+3. Assess for:
+   - Incorrect diagnosis
+   - Urinary obstruction
+   - Prostatitis (males)
+   - Kidney stones
+   - Structural abnormalities
+   - Immunosuppression
+
+4. Consider imaging:
+   - Renal ultrasound
+   - CT urography if indicated
+
+5. Adjust antibiotics based on culture results
+
+Monitoring and Follow-Up
+=========================
+
+Routine Cases:
+--------------
+- Symptom improvement expected within 48-72 hours
+- No routine follow-up urinalysis needed if symptoms resolve
+- Recurrence within 2 weeks suggests relapse (same organism)
+
+High-Risk Cases Requiring Follow-Up:
+-------------------------------------
+- Pregnant women
+- Pyelonephritis
+- Complicated UTI
+- Immunocompromised patients
+- Treatment failure
+- Recurrent infections
+
+Follow-up should include:
+- Clinical assessment
+- Repeat urinalysis/culture (if indicated)
+- Imaging studies (if structural abnormality suspected)
+
+When to Refer to Specialist
+============================
+
+Urology Referral Indicated:
+----------------------------
+- Recurrent UTIs despite prophylaxis
+- Anatomic abnormalities
+- Urinary obstruction
+- Complicated infections
+- Male patients with UTI
+- Persistent hematuria
+- Pediatric UTIs
+
+Nephrology Referral:
+--------------------
+- Declined renal function
+- Proteinuria
+- Suspected glomerulonephritis
+- Chronic kidney disease with UTI
+
+Infectious Disease Referral:
+-----------------------------
+- Multi-drug resistant organisms
+- Immunocompromised patients
+- Fungal UTI
+- Treatment failures with multiple antibiotics
+
+Key Takeaways
+=============
+
+1. Most UTIs are easily treated with short-course antibiotics
+2. Proper diagnosis requires correlation of symptoms and laboratory findings
+3. Urine culture necessary for complicated cases and treatment failures
+4. Prevention strategies are crucial for recurrent UTIs
+5. Always consider patient-specific factors when choosing treatment
+6. Antibiotic stewardship is important to prevent resistance
+
+Red Flags
+=========
+
+Seek immediate medical attention if:
+- High fever (>39°C/102°F)
+- Severe flank pain
+- Nausea/vomiting
+- Blood in urine
+- Symptoms in pregnant women
+- Symptoms in children
+- Inability to tolerate oral intake
+- Signs of sepsis
+- Worsening despite treatment
+
+Important Note
+==============
+
+This guide is for educational purposes. All UTI diagnoses and treatment decisions should be made by qualified healthcare professionals based on individual patient assessment, local antibiotic resistance patterns, and current clinical guidelines.
+
+Always consult with a healthcare provider for proper diagnosis and treatment.
+

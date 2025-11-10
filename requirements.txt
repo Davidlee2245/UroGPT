@@ -1,0 +1,48 @@
+# UroGPT - AI-Powered Urinalysis Interpretation System
+# Requirements file for Python dependencies
+# Recommended Python version: 3.10 or 3.11 (tested)
+# Minimum Python version: 3.8
+# Note: Python 3.12 may require torch>=2.2.0
+
+# Core Deep Learning Framework (for image analysis placeholder)
+torch>=2.0.0  # Use >=2.2.0 for Python 3.12
+torchvision>=0.15.0
+
+# LLM and RAG Dependencies
+langchain>=1.0.0
+langchain-community>=0.4.0
+langchain-openai>=1.0.0
+langchain-text-splitters>=1.0.0
+openai>=1.0.0
+tiktoken>=0.5.0
+
+# Vector Store and Embeddings
+faiss-cpu>=1.7.4
+sentence-transformers>=2.2.2
+
+# API Framework
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+python-multipart>=0.0.6
+
+# Data Processing
+numpy>=1.24.0
+pandas>=2.0.0
+pillow>=10.0.0
+
+# Utilities
+python-dotenv>=1.0.0
+pydantic>=2.0.0
+aiofiles>=23.0.0
+
+# Optional: Alternative LLM Providers
+# anthropic>=0.7.0  # For Claude
+# google-generativeai>=0.3.0  # For Gemini
+# replicate>=0.15.0  # For Llama 3
+
+# Development Tools (optional)
+# pytest>=7.4.0
+# black>=23.0.0
+# flake8>=6.0.0
+# mypy>=1.5.0
+
