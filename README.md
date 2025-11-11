@@ -141,7 +141,8 @@ The best way to use UroGPT is through the modern web interface!
 
 #### Start Backend API:
 ```bash
-# Terminal 1: Start API server
+# Terminal 1: Start API server (from project root)
+cd /path/to/UroGPT  # Navigate to project root
 python api/app.py
 ```
 
@@ -151,7 +152,8 @@ The API will be available at:
 
 #### Start React Frontend:
 ```bash
-# Terminal 2: Start React dev server
+# Terminal 2: Start React dev server (from project root)
+cd /path/to/UroGPT  # Navigate to project root
 cd urogpt-ui
 npm run dev
 ```
