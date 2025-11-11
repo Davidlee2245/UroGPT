@@ -135,9 +135,42 @@ PORT=8000
 
 ## 💻 Usage
 
-### 1. API Server Mode (Recommended)
+### Option 1: Modern React UI ⭐ (Recommended)
 
-Start the FastAPI server:
+The best way to use UroGPT is through the modern web interface!
+
+#### Start Backend API:
+```bash
+# Terminal 1: Start API server
+python api/app.py
+```
+
+The API will be available at:
+- **API**: http://localhost:8000
+- **Interactive Docs**: http://localhost:8000/docs
+
+#### Start React Frontend:
+```bash
+# Terminal 2: Start React dev server
+cd urogpt-ui
+npm run dev
+```
+
+The UI will be available at:
+- **Web Interface**: http://localhost:3000
+
+#### Features in Web UI:
+- 💬 **Chat Assistant** - Ask questions about urinalysis
+- 📄 **Document Browser** - View & summarize medical documents (with AI caching!)
+- 🖼️ **Image Analysis** - Upload urinalysis strip images
+- ⌨️ **Manual Input** - Enter test values manually
+- ℹ️ **About** - Project information
+
+---
+
+### Option 2: API Server Mode (For Integration)
+
+Start just the FastAPI server:
 
 ```bash
 python main.py --mode api
