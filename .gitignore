@@ -78,3 +78,4 @@ htmlcov/
 docs/_build/
 site/
 
+.env.save

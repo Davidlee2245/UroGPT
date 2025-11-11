@@ -1,480 +1,377 @@
-# UroGPT - AI-Powered Urinalysis Interpretation System
+# UroGPT - AI-Powered Urinalysis Analysis System
 
-<div align="center">
-
-![UroGPT](https://img.shields.io/badge/UroGPT-v1.0-blue)
 ![Python](https://img.shields.io/badge/Python-3.8+-green)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
+![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)
 
-**An intelligent medical AI system that combines computer vision and natural language processing to analyze urinalysis results and generate comprehensive medical reports.**
-
-</div>
+**Complete urinalysis strip analyzer using YOLO + MobileViT + GPT-4**
 
 ---
 
 ## 🎯 Overview
 
-UroGPT is a modular AI pipeline designed for urinalysis interpretation, consisting of:
+UroGPT is an AI-powered medical system that analyzes urinalysis strip images and generates comprehensive medical reports.
 
-1. **UroAI (Image Analysis Module)**: Analyzes urinalysis strip images to extract quantitative parameters
-2. **UroGPT (LLM Agent)**: Interprets results using advanced language models with medical knowledge retrieval (RAG)
+### Two-Stage Pipeline
+
+```
+Input Image
+    ↓
+[Stage 1] YOLO (yolo.pt)
+Detects 11 sensor pads
+    ↓
+[Stage 2] MobileViT (analyzer.pth)
+Analyzes each pad (95.43% accuracy)
+    ↓
+[Stage 3] GPT-4
+Generates medical report
+    ↓
+Results + Clinical Interpretation
+```
 
 ### Key Features
 
-- 🔬 **Automated Urinalysis**: Extract glucose, pH, nitrite, and lymphocyte levels from test strips
-- 🧠 **AI-Powered Interpretation**: Natural language medical reports using GPT-4/Claude/Gemini
-- 📚 **Knowledge Retrieval (RAG)**: Evidence-based interpretations using medical literature
-- 🚨 **UTI Detection**: Probabilistic assessment of urinary tract infections
-- 🌐 **REST API**: Easy integration via FastAPI endpoints
-- 📊 **Structured Output**: JSON format with detailed parameter analysis
-
----
-
-## 🏗️ Architecture
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                      UroGPT System                       │
-└─────────────────────────────────────────────────────────┘
-                          │
-          ┌───────────────┴───────────────┐
-          ▼                               ▼
-┌─────────────────────┐       ┌─────────────────────┐
-│   UroAI (Dummy)     │       │   UroGPT (LLM)      │
-│  Image Analysis     │       │   RAG Pipeline      │
-└─────────────────────┘       └─────────────────────┘
-          │                               │
-          ▼                               ▼
-   Urinalysis Results ──────────▶  Medical Report
-```
-
-### System Components
-
-```
-uroai_project/
-├── main.py                    # Entry point (CLI + server)
-├── requirements.txt           # Python dependencies
-├── README.md                  # Documentation
-│
-├── api/                       # FastAPI endpoints
-│   ├── __init__.py
-│   └── app.py                 # REST API server
-│
-├── image_analysis/            # UroAI module (DUMMY)
-│   ├── __init__.py
-│   └── analyzer.py            # ImageAnalyzer, ExpertModel, AttentionFusion
-│
-├── llm_agent/                 # UroGPT module (FUNCTIONAL)
-│   ├── __init__.py
-│   ├── rag_pipeline.py        # RAG with LangChain + FAISS
-│   └── generator.py           # LLM report generation
-│
-└── documents/                 # Medical knowledge corpus
-    └── sample_docs/
-        ├── urinalysis_basics.txt
-        └── uti_management.txt
-```
+- 🔬 **YOLO Pad Detection**: Automatic detection of 11 sensor pads
+- 🧠 **MobileViT Classification**: 95.43% validation accuracy
+- 💬 **AI Medical Reports**: Natural language reports using GPT-4
+- 📚 **RAG Knowledge Base**: Evidence-based medical interpretations
+- 🎨 **Modern Web UI**: React-based interface
+- 🚨 **UTI Risk Assessment**: Probabilistic infection detection
+- 🌐 **REST API**: Easy integration
 
 ---
 
 ## 🚀 Quick Start
 
-### Prerequisites
+### 1. Install Dependencies
 
-- **Python 3.8 or higher** (for backend)
-- **Node.js 18+** (for React frontend)
-- **OpenAI API key** (for GPT-4)
-- **4GB+ RAM** recommended
-
-### Installation
-
-#### 1. Clone the repository
 ```bash
-git clone https://github.com/Davidlee2245/UroGPT.git
-cd UroGPT
-```
-
-#### 2. Set up Python Backend
-```bash
-# Create conda environment (recommended)
-conda create -n urogpt python=3.12
-conda activate urogpt
-
-# Install Python dependencies
+# Install Python packages
 pip install -r requirements.txt
+
+# Upgrade Node.js (for web UI)
+conda install -c conda-forge nodejs=18 -y
 ```
 
-#### 3. Set up React Frontend
+### 2. Set Environment Variables
+
+```bash
+# Create .env file
+cp env.example .env
+
+# Edit .env and add your OpenAI API key
+OPENAI_API_KEY=your_key_here
+```
+
+### 3. Start Backend API
+
+```bash
+./start_complete_api.sh
+# Runs on http://localhost:8000
+```
+
+### 4. Start Web UI
+
 ```bash
 cd urogpt-ui
 npm install
-cd ..
+npm run dev
+# Runs on http://localhost:3000
 ```
 
-#### 4. Configure environment variables
-```bash
-export OPENAI_API_KEY="your-openai-api-key-here"
+### 5. Open in Browser
 
-# Optional configurations
-export LLM_MODEL="gpt-4"                    # or gpt-3.5-turbo
-export EMBEDDING_MODEL="openai"             # or huggingface
-export CORPUS_PATH="documents/sample_docs"
-export PORT="8000"
-```
+Go to **http://localhost:3000** and upload urinalysis strip images!
 
-Or create a `.env` file:
-```env
-OPENAI_API_KEY=your-openai-api-key-here
-LLM_MODEL=gpt-4
-EMBEDDING_MODEL=openai
-CORPUS_PATH=documents/sample_docs
-PORT=8000
-```
+---
+
+## 📊 Model Architecture
+
+### Stage 1: YOLO Pad Detection
+
+**Model**: `yolo.pt` (22 MB)  
+**Purpose**: Detect 11 sensor pad positions on the strip
+
+- **Class 0**: `urine_strip` (dipstick)
+- **Class 1**: `test_pad` (11 individual pads)
+
+### Stage 2: MobileViT Multi-Task Learning
+
+**Model**: `analyzer.pth` (285 MB)  
+**Accuracy**: 95.43% validation  
+**Architecture**:
+- 11 specialist expert backbones (MobileViT-XS per pad)
+- 6 auxiliary classifiers:
+  - **aux_0**: Hemoglobin (7 classes)
+  - **aux_1**: Bilirubin (4 classes)
+  - **aux_4**: Protein (6 classes)
+  - **aux_5**: Nitrite (3 classes)
+  - **aux_6**: Glucose (10 classes)
+  - **aux_7**: pH (7 classes)
+- 1 main classifier with attention fusion (33 classes)
+- **Total**: 24.5M parameters
+
+### Stage 3: GPT-4 Report Generation
+
+**Purpose**: Generate natural language medical reports with RAG
 
 ---
 
 ## 💻 Usage
 
-### Option 1: Modern React UI ⭐ (Recommended)
-
-The best way to use UroGPT is through the modern web interface!
-
-#### Start Backend API:
-```bash
-# Terminal 1: Start API server (from project root)
-cd /path/to/UroGPT  # Navigate to project root
-python api/app.py
-```
-
-The API will be available at:
-- **API**: http://localhost:8000
-- **Interactive Docs**: http://localhost:8000/docs
-
-#### Start React Frontend:
-```bash
-# Terminal 2: Start React dev server (from project root)
-cd /path/to/UroGPT  # Navigate to project root
-cd urogpt-ui
-npm run dev
-```
-
-The UI will be available at:
-- **Web Interface**: http://localhost:3000
-
-#### Features in Web UI:
-- 💬 **Chat Assistant** - Ask questions about urinalysis
-- 📄 **Document Browser** - View & summarize medical documents (with AI caching!)
-- 🖼️ **Image Analysis** - Upload urinalysis strip images
-- ⌨️ **Manual Input** - Enter test values manually
-- ℹ️ **About** - Project information
-
----
-
-### Option 2: API Server Mode (For Integration)
-
-Start just the FastAPI server:
-
-```bash
-python main.py --mode api
-```
-
-The server will be available at:
-- **API**: http://localhost:8000
-- **Interactive Docs**: http://localhost:8000/docs
-- **Alternative Docs**: http://localhost:8000/redoc
-
-#### API Endpoints
-
-**POST /chat** - Chat with AI assistant
-```bash
-curl -X POST "http://localhost:8000/chat" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "patient_context": "What does positive nitrite indicate?"
-  }'
-```
-
-**POST /analyze** - Analyze manual results
-```bash
-curl -X POST "http://localhost:8000/analyze" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "glucose": 3.1,
-    "pH": 6.8,
-    "nitrite": 0.2,
-    "lymphocyte": 1.4,
-    "patient_context": "Optional patient history"
-  }'
-```
-
-**GET /documents** - List all medical documents
-```bash
-curl "http://localhost:8000/documents"
-```
-
-**GET /documents/content** - Get document content
-```bash
-curl "http://localhost:8000/documents/content?filepath=documents/sample_docs/urinalysis_basics.txt"
-```
-
-**GET /health** - Check system status
-```bash
-curl "http://localhost:8000/health"
-```
-
-### 2. Interactive Mode
-
-Run interactive terminal interface:
-
-```bash
-python main.py --mode interactive
-```
-
-Enter urinalysis parameters manually and receive instant analysis.
-
-### 3. Single Image Analysis
-
-Analyze a specific image:
-
-```bash
-python main.py --mode analyze --image path/to/urinalysis_strip.jpg
-```
-
----
-
-## 📊 Example Output
-
-### Input (JSON)
-```json
-{
-  "glucose": 3.1,
-  "pH": 6.8,
-  "nitrite": 0.2,
-  "lymphocyte": 1.4,
-  "UTI_probability": 0.86
-}
-```
-
-### Output (Medical Report)
-
-```
-Urinalysis Report
-==================
-
-PARAMETER ANALYSIS:
-
-Glucose: 3.1 mg/dL
-✓ Within normal range (0-15 mg/dL). No indication of glucosuria or diabetes.
-
-pH: 6.8
-✓ Normal acidic urine (4.5-8.0). Appropriate for kidney function assessment.
-
-Nitrite: 0.2 mg/dL
-⚠️ POSITIVE - Indicates presence of gram-negative bacteria. Common in urinary 
-tract infections caused by E. coli, Proteus, or Klebsiella species.
-
-Lymphocytes: 1.4 cells/μL
-✓ Within normal range (<5 cells/μL). Mild elevation but not clinically significant.
-
-UTI ASSESSMENT:
-
-AI-Predicted Probability: 86%
-Risk Level: HIGH
-
-The combination of positive nitrite with other indicators suggests a strong 
-likelihood of urinary tract infection. While lymphocyte count is not markedly 
-elevated, the positive nitrite test is highly specific for bacteriuria.
-
-CLINICAL RECOMMENDATIONS:
-
-1. Consult healthcare provider for proper diagnosis and treatment
-2. Urine culture recommended to identify causative organism
-3. Consider empiric antibiotic therapy pending culture results
-4. Increase fluid intake
-5. Monitor symptoms (dysuria, frequency, urgency, fever)
-6. Follow up if symptoms persist or worsen
-
-This report is AI-generated and should not replace professional medical evaluation.
-```
-
----
-
-## 🧪 Testing the System
-
-### Test with sample data:
+### Python API
 
 ```python
 from image_analysis import ImageAnalyzer
-from llm_agent import RAGPipeline, ReportGenerator
 
-# Initialize components
+# Initialize
 analyzer = ImageAnalyzer()
-rag = RAGPipeline()
-rag.build_vector_store()
-generator = ReportGenerator(rag_pipeline=rag)
 
-# Analyze (dummy results)
-results = analyzer.analyze("dummy_image.jpg")
+# Analyze image
+results = analyzer.analyze('strip_image.jpg')
 
-# Generate report
-report = generator.generate_report(results)
-print(report["report"])
+# Access results
+print(f"UTI Probability: {results['UTI_probability']:.1%}")
+print(f"Glucose: {results['glucose']} mg/dL")
+print(f"pH: {results['pH']}")
+print(f"Confidence: {results['confidence']:.1%}")
+```
+
+### REST API
+
+```bash
+# Health check
+curl http://localhost:8000/health
+
+# Upload image
+curl -X POST "http://localhost:8000/analyze/image" \
+  -F "file=@strip.jpg"
+
+# Manual input
+curl -X POST "http://localhost:8000/analyze" \
+  -H "Content-Type: application/json" \
+  -d '{"glucose": 100, "pH": 7.0, "nitrite": 0.5}'
+```
+
+### Web Interface
+
+1. Open http://localhost:3000
+2. Go to **Image Analysis** page
+3. Upload urinalysis strip image
+4. Click **"Analyze Image"**
+5. View results with UTI risk assessment
+
+---
+
+## 📁 Project Structure
+
+```
+UroGPT/
+├── api/                          # FastAPI backend
+│   └── app.py                    # REST API endpoints
+├── image_analysis/               # YOLO + MobileViT pipeline
+│   ├── analyzer.py               # Complete pipeline (700+ lines)
+│   ├── yolo.pt                   # YOLO weights (22 MB)
+│   ├── analyzer.pth              # MobileViT weights (285 MB)
+│   └── *.ipynb                   # Training notebooks
+├── llm_agent/                    # GPT-4 integration
+│   ├── rag_pipeline.py           # RAG with medical documents
+│   └── generator.py              # Report generation
+├── urogpt-ui/                    # React web interface
+│   └── src/
+│       ├── pages/                # UI pages
+│       └── services/             # API calls
+├── documents/                    # Medical knowledge base
+├── test_upload.html              # Simple test page
+├── start_complete_api.sh         # Start backend script
+└── requirements.txt              # Python dependencies
 ```
 
 ---
 
 ## 🔧 Configuration
 
-### LLM Models
+### Environment Variables (.env)
 
-UroGPT supports multiple language models:
-
-**OpenAI (Default)**
 ```bash
-export LLM_MODEL="gpt-4"  # or gpt-3.5-turbo, gpt-4-turbo
-export OPENAI_API_KEY="your-key"
+# Required
+OPENAI_API_KEY=your_openai_api_key
+
+# Optional
+LLM_MODEL=gpt-4                   # or gpt-3.5-turbo
+EMBEDDING_MODEL=openai            # or sentence-transformers
+CORPUS_PATH=documents/sample_docs
 ```
 
-**Anthropic Claude**
+---
+
+## 📈 Performance
+
+| Metric | Value |
+|--------|-------|
+| **YOLO Detection** | ~20-30ms (GPU) |
+| **MobileViT Classification** | ~150-200ms (GPU) |
+| **Total Pipeline** | ~200-250ms (GPU) |
+| **Validation Accuracy** | 95.43% |
+| **Model Size** | ~307 MB total |
+| **Memory (GPU)** | ~2.5GB VRAM |
+| **Training Images** | 4,564 strips (27,384 augmented) |
+
+---
+
+## 🧪 Testing
+
+### Test Complete Pipeline
+
+```bash
+python test_analyzer.py
+```
+
+### Simple HTML Test Page
+
+Open `test_upload.html` in browser (no Node.js needed)
+
+### Run API Tests
+
+```bash
+# With backend running:
+curl http://localhost:8000/health
+curl http://localhost:8000/docs  # Swagger UI
+```
+
+---
+
+## 🎓 Training
+
+### YOLO Training
+
+See `image_analysis/yolo.ipynb`
+- 1,343 training images
+- Detects dipstick + 11 pads
+- Output: `yolo.pt`
+
+### MobileViT Training
+
+See `image_analysis/9_mobilevit_xs.ipynb`
+- 4,564 strips (27,384 after augmentation)
+- Multi-task learning with 11 specialists
+- 95.43% validation accuracy
+- Output: `analyzer.pth`
+
+---
+
+## 🔍 API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/` | GET | API information |
+| `/health` | GET | Health check |
+| `/analyze` | POST | Analyze manual input |
+| `/analyze/image` | POST | Analyze uploaded image |
+| `/chat` | POST | Chat with medical AI |
+| `/docs` | GET | Interactive API docs (Swagger) |
+
+---
+
+## 🛠️ Troubleshooting
+
+### Issue: "Module not found" errors
+
+**Solution:**
+```bash
+pip install -r requirements.txt
+```
+
+### Issue: Node.js version too old
+
+**Solution:**
+```bash
+conda install -c conda-forge nodejs=18 -y
+hash -r  # Refresh terminal
+```
+
+### Issue: CUDA out of memory
+
+**Solution:**
 ```python
-# Install: pip install anthropic
-export LLM_MODEL="claude-3-opus-20240229"
-export ANTHROPIC_API_KEY="your-key"
+# Use CPU instead
+analyzer = ImageAnalyzer(device='cpu')
 ```
 
-**Google Gemini**
-```python
-# Install: pip install google-generativeai
-export LLM_MODEL="gemini-pro"
-export GOOGLE_API_KEY="your-key"
-```
+### Issue: React UI not starting
 
-### Embedding Models
-
-**OpenAI Embeddings (Default)**
+**Solution:**
 ```bash
-export EMBEDDING_MODEL="openai"
-```
-
-**HuggingFace (Free, Local)**
-```bash
-export EMBEDDING_MODEL="huggingface"
-# Uses: sentence-transformers/all-MiniLM-L6-v2
+cd urogpt-ui
+rm -rf node_modules package-lock.json
+npm install
+npm run dev
 ```
 
 ---
 
-## 📚 RAG Knowledge Base
+## 📚 Documentation
 
-The system uses Retrieval-Augmented Generation (RAG) to ground responses in medical evidence.
-
-### Adding Medical Documents
-
-1. Place text files in `documents/sample_docs/`
-2. Restart the system to rebuild the vector store
-3. Documents will be automatically embedded and indexed
-
-```bash
-documents/sample_docs/
-├── urinalysis_basics.txt      # Urinalysis parameters
-├── uti_management.txt         # UTI diagnosis and treatment
-└── your_custom_docs.txt       # Add your own medical references
-```
-
----
-
-## ⚠️ Important Notes
-
-### Current Status
-
-- **Image Analysis Module (UroAI)**: ⚠️ **DUMMY IMPLEMENTATION**
-  - Returns placeholder values
-  - Real CV model integration pending
-  - All classes are stubs with `pass` statements
-  
-- **LLM Agent (UroGPT)**: ✅ **FULLY FUNCTIONAL**
-  - Complete RAG pipeline with LangChain
-  - Real LLM integration (OpenAI/Claude/Gemini)
-  - Production-ready medical report generation
-
-### Medical Disclaimer
-
-**This system is for research and educational purposes only.**
-
-- NOT FDA approved
-- NOT a substitute for professional medical diagnosis
-- AI predictions should be verified by qualified healthcare professionals
-- Always consult a licensed physician for medical decisions
-
----
-
-## 🛠️ Development
-
-### Project Structure
-
-- **image_analysis/**: Placeholder for computer vision model
-  - TODO: Integrate trained PyTorch model
-  - TODO: Implement preprocessing pipeline
-  - TODO: Add attention-based fusion mechanism
-
-- **llm_agent/**: Production-ready NLP pipeline
-  - RAG with FAISS vector store
-  - LangChain integration
-  - Multi-model LLM support
-
-- **api/**: REST API with FastAPI
-  - OpenAPI documentation
-  - File upload support
-  - CORS enabled
-
-### Future Enhancements
-
-- [ ] Replace dummy image analyzer with real trained model
-- [ ] Add support for more urinalysis parameters
-- [ ] Implement user authentication
-- [ ] Add result history and tracking
-- [ ] Create web-based UI (React/Vue)
-- [ ] Add multi-language support
-- [ ] Integrate with EHR systems (HL7/FHIR)
-- [ ] Add batch processing capabilities
+- **This README**: Complete guide
+- `test_upload.html`: Simple working example
+- `api/app.py`: API source code with docstrings
+- `image_analysis/analyzer.py`: Model pipeline with comments
+- Training notebooks: `*.ipynb` files with detailed explanations
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Areas of interest:
-
-1. **Computer Vision**: Help integrate a real urinalysis image analysis model
-2. **Medical Knowledge**: Add more medical documents to the corpus
-3. **LLM Integration**: Add support for more language models
-4. **Testing**: Write unit and integration tests
-5. **Documentation**: Improve guides and examples
+This is a research/educational project. Feel free to:
+- Test with your own urinalysis images
+- Improve the models
+- Add new features
+- Report issues
 
 ---
 
-## 📝 License
+## ⚠️ Disclaimer
 
-MIT License - see LICENSE file for details
+**This is a research prototype and NOT approved for medical use.**
 
----
-
-## 📧 Contact
-
-For questions, issues, or collaboration:
-
-- **GitHub Issues**: https://github.com/yourusername/UroGPT/issues
-- **Email**: your.email@example.com
+- Requires clinical validation before medical deployment
+- Results should be verified by medical professionals
+- Not a substitute for laboratory analysis
+- Use for educational/research purposes only
 
 ---
 
-## 🙏 Acknowledgments
+## 📄 License
 
-- OpenAI for GPT models
-- LangChain for RAG framework
-- FastAPI for web framework
-- Medical professionals who provided domain expertise
+MIT License - See LICENSE file for details
 
 ---
 
-**Made with ❤️ for advancing medical AI**
+## 🎉 Credits
 
+**Models**:
+- YOLOv8 (Ultralytics)
+- MobileViT-XS (Apple/timm)
+- GPT-4 (OpenAI)
+
+**Frameworks**:
+- PyTorch
+- FastAPI
+- React + Vite
+
+---
+
+## 📞 Support
+
+For issues or questions:
+1. Check this README
+2. Review `test_upload.html` for working example
+3. Check training notebooks for model details
+4. Review API documentation at `/docs`
+
+---
+
+**Last Updated**: November 11, 2025  
+**Status**: ✅ Production Ready (requires clinical validation)  
+**Pipeline**: YOLO + MobileViT + GPT-4  
+**Accuracy**: 95.43% validation

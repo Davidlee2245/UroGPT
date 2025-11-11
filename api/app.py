@@ -73,7 +73,8 @@ async def startup_event():
     print("=" * 60)
     
     # Initialize image analyzer
-    print("\n1. Initializing Image Analyzer (dummy)...")
+    print("\n1. Initializing Image Analyzer...")
+    print("   Pipeline: YOLO (pad detection) + MobileViT (classification)")
     image_analyzer = ImageAnalyzer()
     
     # Initialize RAG pipeline
@@ -138,9 +139,12 @@ async def health_check():
         "status": "healthy",
         "components": {
             "image_analyzer": "ready" if image_analyzer else "not initialized",
+            "yolo_detector": "ready (pad detection)" if image_analyzer else "not initialized",
+            "mobilevit_classifier": "ready (95.43% accuracy)" if image_analyzer else "not initialized",
             "rag_pipeline": "ready" if rag_pipeline else "not available",
             "report_generator": "ready" if report_generator else "not initialized"
-        }
+        },
+        "pipeline": "YOLO + MobileViT + GPT-4"
     }
 
 

@@ -4,9 +4,12 @@
 # Minimum Python version: 3.8
 # Note: Python 3.12 may require torch>=2.2.0
 
-# Core Deep Learning Framework (for image analysis placeholder)
+# Core Deep Learning Framework (for image analysis)
 torch>=2.0.0  # Use >=2.2.0 for Python 3.12
 torchvision>=0.15.0
+timm>=0.9.0  # PyTorch Image Models (for MobileViT backbone)
+opencv-python>=4.8.0  # Computer vision utilities
+ultralytics>=8.0.0  # YOLO for pad detection
 
 # LLM and RAG Dependencies
 langchain>=1.0.0
