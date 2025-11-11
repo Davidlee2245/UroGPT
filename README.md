@@ -81,24 +81,37 @@ uroai_project/
 
 ### Prerequisites
 
-- Python 3.8 or higher
-- OpenAI API key (for GPT-4)
-- 4GB+ RAM recommended
+- **Python 3.8 or higher** (for backend)
+- **Node.js 18+** (for React frontend)
+- **OpenAI API key** (for GPT-4)
+- **4GB+ RAM** recommended
 
 ### Installation
 
-1. **Clone the repository**
+#### 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/UroGPT.git
+git clone https://github.com/Davidlee2245/UroGPT.git
 cd UroGPT
 ```
 
-2. **Install dependencies**
+#### 2. Set up Python Backend
 ```bash
+# Create conda environment (recommended)
+conda create -n urogpt python=3.12
+conda activate urogpt
+
+# Install Python dependencies
 pip install -r requirements.txt
 ```
 
-3. **Set up environment variables**
+#### 3. Set up React Frontend
+```bash
+cd urogpt-ui
+npm install
+cd ..
+```
+
+#### 4. Configure environment variables
 ```bash
 export OPENAI_API_KEY="your-openai-api-key-here"
 
@@ -137,6 +150,15 @@ The server will be available at:
 
 #### API Endpoints
 
+**POST /chat** - Chat with AI assistant
+```bash
+curl -X POST "http://localhost:8000/chat" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "patient_context": "What does positive nitrite indicate?"
+  }'
+```
+
 **POST /analyze** - Analyze manual results
 ```bash
 curl -X POST "http://localhost:8000/analyze" \
@@ -150,10 +172,14 @@ curl -X POST "http://localhost:8000/analyze" \
   }'
 ```
 
-**POST /analyze/image** - Analyze from image
+**GET /documents** - List all medical documents
 ```bash
-curl -X POST "http://localhost:8000/analyze/image" \
-  -F "file=@path/to/urinalysis_strip.jpg"
+curl "http://localhost:8000/documents"
+```
+
+**GET /documents/content** - Get document content
+```bash
+curl "http://localhost:8000/documents/content?filepath=documents/sample_docs/urinalysis_basics.txt"
 ```
 
 **GET /health** - Check system status
