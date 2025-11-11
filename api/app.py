@@ -275,6 +275,172 @@ async def analyze_image(
             os.remove(temp_path)
 
 
+@app.post("/chat")
+async def chat(request: AnalysisRequest):
+    """
+    Chat endpoint for general queries without requiring test results.
+    """
+    if not report_generator:
+        raise HTTPException(
+            status_code=503,
+            detail="Report generator not initialized. Check OPENAI_API_KEY."
+        )
+    
+    if not request.patient_context:
+        raise HTTPException(
+            status_code=400,
+            detail="No query provided"
+        )
+    
+    try:
+        # Use dummy results to trigger report generation with just the query
+        dummy_results = {"query_mode": True}
+        
+        report_data = report_generator.generate_report(
+            urinalysis_results=dummy_results,
+            use_rag=rag_pipeline is not None,
+            patient_context=request.patient_context
+        )
+        
+        return {
+            "status": "success",
+            "response": report_data["report"]
+        }
+    
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error generating response: {str(e)}"
+        )
+
+
+@app.get("/documents")
+async def list_documents():
+    """
+    List all documents in the corpus.
+    """
+    try:
+        corpus_path = os.getenv("CORPUS_PATH", "documents/sample_docs")
+        docs = []
+        
+        if os.path.exists(corpus_path):
+            for file in Path(corpus_path).glob("*"):
+                if file.is_file() and file.suffix.lower() in ['.txt', '.pdf']:
+                    docs.append({
+                        "filename": file.name,
+                        "filepath": str(file),
+                        "type": file.suffix[1:].lower(),
+                        "size": file.stat().st_size
+                    })
+        
+        return {"documents": docs}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error listing documents: {str(e)}")
+
+
+@app.get("/documents/content")
+async def get_document_content(filepath: str):
+    """
+    Get the content of a specific document.
+    """
+    try:
+        file_path = Path(filepath)
+        
+        # Security check: ensure file is within documents directory
+        corpus_path = Path(os.getenv("CORPUS_PATH", "documents/sample_docs"))
+        if not str(file_path.resolve()).startswith(str(corpus_path.resolve())):
+            raise HTTPException(status_code=403, detail="Access denied")
+        
+        if not file_path.exists():
+            raise HTTPException(status_code=404, detail="File not found")
+        
+        # Read file based on type
+        if file_path.suffix.lower() == '.pdf':
+            from langchain_community.document_loaders import PyPDFLoader
+            loader = PyPDFLoader(str(file_path))
+            documents = loader.load()
+            content = "\n\n".join([doc.page_content for doc in documents])
+        else:
+            # Read text file
+            with open(file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+        
+        return {"content": content, "filename": file_path.name}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error reading document: {str(e)}")
+
+
+def get_summary_path(doc_path: Path) -> Path:
+    """Get the path where summary should be stored."""
+    summary_dir = doc_path.parent / ".summaries"
+    summary_dir.mkdir(exist_ok=True)
+    # Use .summary.txt format to match existing files from app_gui.py
+    return summary_dir / f"{doc_path.stem}.summary.txt"
+
+
+@app.get("/documents/summary")
+async def get_cached_summary(filepath: str):
+    """
+    Get cached summary for a document if it exists.
+    """
+    try:
+        file_path = Path(filepath)
+        
+        # Security check
+        corpus_path = Path(os.getenv("CORPUS_PATH", "documents/sample_docs"))
+        if not str(file_path.resolve()).startswith(str(corpus_path.resolve())):
+            raise HTTPException(status_code=403, detail="Access denied")
+        
+        summary_path = get_summary_path(file_path)
+        
+        if summary_path.exists():
+            with open(summary_path, 'r', encoding='utf-8') as f:
+                summary = f.read()
+            return {"summary": summary, "cached": True}
+        else:
+            return {"summary": None, "cached": False}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error loading summary: {str(e)}")
+
+
+class SummarySaveRequest(BaseModel):
+    """Request model for saving summary"""
+    filepath: str
+    summary: str
+
+
+@app.post("/documents/summary")
+async def save_summary(request: SummarySaveRequest):
+    """
+    Save generated summary to cache.
+    """
+    try:
+        file_path = Path(request.filepath)
+        
+        # Security check
+        corpus_path = Path(os.getenv("CORPUS_PATH", "documents/sample_docs"))
+        if not str(file_path.resolve()).startswith(str(corpus_path.resolve())):
+            raise HTTPException(status_code=403, detail="Access denied")
+        
+        summary_path = get_summary_path(file_path)
+        
+        with open(summary_path, 'w', encoding='utf-8') as f:
+            f.write(request.summary)
+        
+        return {"status": "success", "message": "Summary cached successfully"}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error saving summary: {str(e)}")
+
+
 if __name__ == "__main__":
     import uvicorn
     

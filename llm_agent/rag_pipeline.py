@@ -12,7 +12,7 @@ try:
     from langchain_text_splitters import RecursiveCharacterTextSplitter
     from langchain_openai import OpenAIEmbeddings
     from langchain_community.vectorstores import FAISS
-    from langchain_community.document_loaders import DirectoryLoader, TextLoader
+    from langchain_community.document_loaders import DirectoryLoader, TextLoader, PyPDFLoader
     from langchain_core.documents import Document
 except ImportError:
     print("⚠️  LangChain not installed. Run: pip install langchain langchain-community langchain-openai langchain-text-splitters")
@@ -94,6 +94,7 @@ class RAGPipeline:
     def load_documents(self) -> List[Document]:
         """
         Load documents from corpus directory.
+        Supports: .txt and .pdf files
         
         Returns:
             List of loaded documents
@@ -108,18 +109,35 @@ class RAGPipeline:
         
         print(f"Loading documents from: {corpus_path}")
         
-        # Load all text files from directory
-        loader = DirectoryLoader(
-            str(corpus_path),
-            glob="**/*.txt",
-            loader_cls=TextLoader,
-            show_progress=True
-        )
+        all_documents = []
         
-        documents = loader.load()
-        print(f"✓ Loaded {len(documents)} documents")
+        # Load text files
+        txt_files = list(corpus_path.glob("**/*.txt"))
+        if txt_files:
+            print(f"Loading {len(txt_files)} text files...")
+            txt_loader = DirectoryLoader(
+                str(corpus_path),
+                glob="**/*.txt",
+                loader_cls=TextLoader,
+                show_progress=True
+            )
+            all_documents.extend(txt_loader.load())
         
-        return documents
+        # Load PDF files
+        pdf_files = list(corpus_path.glob("**/*.pdf"))
+        if pdf_files:
+            print(f"Loading {len(pdf_files)} PDF files...")
+            for pdf_file in pdf_files:
+                try:
+                    pdf_loader = PyPDFLoader(str(pdf_file))
+                    all_documents.extend(pdf_loader.load())
+                    print(f"  ✓ Loaded: {pdf_file.name}")
+                except Exception as e:
+                    print(f"  ⚠️  Failed to load {pdf_file.name}: {e}")
+        
+        print(f"✓ Loaded {len(all_documents)} total documents ({len(txt_files)} txt, {len(pdf_files)} pdf)")
+        
+        return all_documents
     
     def build_vector_store(self, documents: Optional[List[Document]] = None):
         """
